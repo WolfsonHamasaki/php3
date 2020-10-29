@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset='UTF-8' />
+    <title>351 nodes Visualization</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet" />
+    <link href="./assets/css/app.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="page" id="vue-app">
+      <div class="control-panel" v-cloak>
+        <h1 class="panel-title">Multi-dimentional Data Visualisation</h1>
+        <section class="pattern-sct">
+          <div class="title">Type</div>
+          <div class="col">
+            <div class="item"><label><input type="radio" value="act" v-model="state.type">Activity</label></div>
+            <div class="item"><label><input type="radio" value="cap" v-model="state.type">Capacity</label></div>
+          </div>
+        </section>
+        <section class="pattern-sct">
+          <div class="title">Period</div>
+          <div class="col">
+            <div class="item"><label><input type="radio" value="40" v-model="state.year">2040</label></div>
+            <div class="item"><label><input type="radio" value="50" v-model="state.year">2050</label></div>
+          </div>
+        </section>
+        <section class="pattern-sct" id="secTimeSlice">
+          <div class="title">TimeSlice</div>
+          <div class="col is-colmun">
+            <div class="item"><label><input type="radio" value="AN" v-model="state.timeslice">Annual</label></div>
+            <div class="item">
+              <label><input type="radio" value="STZ" v-model="state.timeslice">Season &amp; TimeZone
+              <select v-model="state.seasonTimezone" :disabled="state.timeslice!='STZ'">
+                <option value="RM">Spring / Morning</option>
+                <option value="RD">Spring / Day</option>
+                <option value="RE">Spring / Evening</option>
+                <option value="RN">Spring / Night</option>
+                <option value="SM">Summer / Morning</option>
+                <option value="SD">Summer / Day</option>
+                <option value="SE">Summer / Evening</option>
+                <option value="SN">Summer / Night</option>
+                <option value="FM">Fall / Morning</option>
+                <option value="FD">Fall / Day</option>
+                <option value="FE">Fall / Evening</option>
+                <option value="FN">Fall / Night</option>
+                <option value="WM">Winter / Morning</option>
+                <option value="WD">Winter / Day</option>
+                <option value="WE">Winter / Evening</option>
+                <option value="WN">Winter / Night</option>
+              </select>
+              </label>
+            </div>
+            <div class="item"><label><input type="radio" value="ONE" v-model="state.timeslice">OneDay ( Aug.8 )</label></div>
+          </div>
+        </section>
+        <section class="pattern-sct">
+          <table class="scenario-tbl">
+            <tr>
+              <th></th>
+              <th>CarbonCapacity</th>
+              <th>EV Charge</th>
+              <th>Grid Expansion</th>
+              <th>N-1 Standerd</th>
+            </tr>
+            <tr :disabled="isOneDay" @click.stop="selectScenario($event)">
+              <td><input type="radio" value="001" v-model="state.scenario" :disabled="isOneDay"></td>
+              <td class="p80">80%</td>
+              <td class="atHome">At Home</td>
+              <td class="no">No</td>
+              <td class="no">No</td>
+            </tr>
+            <tr @click.stop="selectScenario($event)">
+              <td><input type="radio" value="002" v-model="state.scenario"></td>
+              <td class="p80">80%</td>
+              <td class="pub">Public Charging</td>
+              <td class="no">No</td>
+              <td class="no">No</td>
+            </tr>
+            <tr :disabled="isOneDay" @click.stop="selectScenario($event)">
+              <td><input type="radio" value="003" v-model="state.scenario" :disabled="isOneDay"></td>
+              <td class="p80">80%</td>
+              <td class="atHome">At Home</td>
+              <td class="yes">Yes</td>
+              <td class="no">No</td>
+            </tr>
+            <tr @click.stop="selectScenario($event)">
+              <td><input type="radio" value="004" v-model="state.scenario"></td>
+              <td class="p80">80%</td>
+              <td class="pub">Public Charging</td>
+              <td class="yes">Yes</td>
+              <td class="no">No</td>
+            </tr>
+            <tr :disabled="isOneDay" @click.stop="selectScenario($event)">
+              <td><input type="radio" value="005" v-model="state.scenario" :disabled="isOneDay"></td>
+              <td class="p90">90%</td>
+              <td class="atHome">At Home</td>
+              <td class="no">No</td>
+              <td class="no">No</td>
+            </tr>
+            <tr :disabled="isOneDay" @click.stop="selectScenario($event)">
+              <td><input type="radio" value="006" v-model="state.scenario" :disabled="isOneDay"></td>
+              <td class="p90">90%</td>
+              <td class="pub">Public Charging</td>
+              <td class="no">No</td>
+              <td class="no">No</td>
+            </tr>
+            <tr :disabled="isOneDay" @click.stop="selectScenario($event)">
+              <td><input type="radio" value="007" v-model="state.scenario" :disabled="isOneDay"></td>
+              <td class="p90">90%</td>
+              <td class="atHome">At Home</td>
+              <td class="yes">Yes</td>
+              <td class="no">No</td>
+            </tr>
+            <tr :disabled="isOneDay" @click.stop="selectScenario($event)">
+              <td><input type="radio" value="008" v-model="state.scenario" :disabled="isOneDay"></td>
+              <td class="p90">90%</td>
+              <td class="pub">Public Charging</td>
+              <td class="yes">Yes</td>
+              <td class="no">No</td>
+            </tr>
+            <tr :disabled="isOneDay" @click.stop="selectScenario($event)">
+              <td><input type="radio" value="009" v-model="state.scenario" :disabled="isOneDay"></td>
+              <td class="p80">80%</td>
+              <td class="atHome">At Home</td>
+              <td class="no">No</td>
+              <td class="yes">Yes</td>
+            </tr>
+            <tr :disabled="isOneDay" @click.stop="selectScenario($event)">
+              <td><input type="radio" value="010" v-model="state.scenario" :disabled="isOneDay"></td>
+              <td class="p90">90%</td>
+              <td class="atHome">At Home</td>
+              <td class="no">No</td>
+              <td class="yes">Yes</td>
+            </tr>
+          </table>
+        </section>
+        <section class="chart-type-sct">
+          <div class="chart-type">
+            <label class="title"><input type="checkbox" value="arc" v-model="state.charts">Arc</label>
+            <div class="desc">
+              <span class="txt">Arc Layer represents a network of 351 nodes.</span>
+              <img class="arc-level" src="./assets/img/arc.png">
+            </div>
+          </div>
+          <div class="chart-type">
+            <label class="title"><input type="checkbox" value="scatter" v-model="state.charts">Scatter</label>
+            <div class="desc">
+              <span class="txt">Scatter Layer represents the activity amount [GWh] and the total installed capacity [GW].</span>
+            </div>
+          </div>
+          <div class="chart-type">
+            <label class="title"><input type="checkbox" value="grid" v-model="state.charts">Grid</label>
+            <div class="desc is-row">
+              <span class="txt">Grid Layer represents the density of related facilities.</span>
+              <img class="grid-level" src="./assets/img/grid.png">
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+    <div id="deck-cont">
+      <div id="tooltip"></div>
+      <div id="map"></div>
+      <canvas id="deck-canvas"></canvas>
+    </div>
+    <script src='./assets/js/app.bundle.js'></script>
+  </body>
+</html>
